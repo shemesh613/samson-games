@@ -9,7 +9,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;font-family:'Heebo',sans-serif;direction:rtl;background:#06061a;color:#fff;overflow-x:hidden}
 
-/* BG */
 body::before{
   content:'';position:fixed;inset:0;
   background:radial-gradient(ellipse at 20% 50%,#1a0a3a 0%,transparent 60%),
@@ -18,19 +17,28 @@ body::before{
   pointer-events:none;z-index:0;
 }
 
-.wrapper{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:40px 20px}
+.wrapper{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:40px 20px}
 
-/* HEADER */
-.header{text-align:center;margin-bottom:48px}
+.header{text-align:center;margin-bottom:40px}
 .logo{font-size:4rem;margin-bottom:8px;filter:drop-shadow(0 0 20px rgba(255,180,0,.6));animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 h1{font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
 .subtitle{color:rgba(255,255,255,.6);font-size:1.1rem}
 
-/* GRID */
+.section-title{
+  display:flex;align-items:center;gap:14px;
+  font-size:1.3rem;font-weight:900;
+  margin:36px 0 18px;color:#fff;
+}
+.section-title::before,.section-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+}
+.section-title .emoji{font-size:1.5rem}
+.section-title.coop{color:#7BFFBF}
+
 .games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
 
-/* CARD */
 .game-card{
   background:rgba(255,255,255,.05);
   border:2px solid rgba(255,255,255,.1);
@@ -52,12 +60,24 @@ h1{font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#F
   box-shadow:0 0 40px var(--glow);
 }
 .game-card:hover::before{opacity:.08}
+.game-card.new::after{
+  content:'חדש!';
+  position:absolute;top:14px;left:14px;
+  padding:3px 12px;border-radius:20px;
+  background:linear-gradient(135deg,#FF2A2A,#FFB000);
+  color:#fff;font-size:.7rem;font-weight:900;
+  letter-spacing:.05em;
+  box-shadow:0 0 15px rgba(255,100,0,.5);
+  animation:newPulse 2s ease-in-out infinite;
+}
+@keyframes newPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 
 .card-emoji{font-size:3.5rem;line-height:1;filter:drop-shadow(0 0 10px var(--glow))}
 .card-title{font-size:1.5rem;font-weight:900;margin-bottom:2px}
 .card-desc{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.5;flex:1}
 .card-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .tag{padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12)}
+.tag.hot{background:rgba(255,80,40,.18);color:#FFB088;border-color:rgba(255,100,40,.4)}
 .card-btn{
   margin-top:8px;padding:12px;
   border:none;border-radius:14px;
@@ -68,17 +88,16 @@ h1{font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#F
 }
 .game-card:hover .card-btn{transform:scale(1.03)}
 
-/* COLORS per card */
-.card-wheel{--c1:#FFD700;--c2:#FF9500;--glow:rgba(255,180,0,.5)}
-.card-boxes{--c1:#00C896;--c2:#0090FF;--glow:rgba(0,200,150,.4)}
-.card-bomb {--c1:#FF4400;--c2:#CC2200;--glow:rgba(255,68,0,.5)}
-.card-slots{--c1:#AA00FF;--c2:#FF6600;--glow:rgba(180,0,255,.4)}
+.card-space {--c1:#00BFFF;--c2:#7B2FFF;--glow:rgba(0,180,255,.5)}
+.card-dragon{--c1:#FF2A2A;--c2:#FFB000;--glow:rgba(255,80,40,.5)}
+.card-wheel {--c1:#FFD700;--c2:#FF9500;--glow:rgba(255,180,0,.5)}
+.card-boxes {--c1:#00C896;--c2:#0090FF;--glow:rgba(0,200,150,.4)}
+.card-bomb  {--c1:#FF4400;--c2:#CC2200;--glow:rgba(255,68,0,.5)}
+.card-slots {--c1:#AA00FF;--c2:#FF6600;--glow:rgba(180,0,255,.4)}
 
-/* FOOTER */
 .footer{text-align:center;margin-top:48px;color:rgba(255,255,255,.25);font-size:.8rem;line-height:1.8}
 .footer a{color:rgba(255,255,255,.4);text-decoration:none}
 
-/* STARS */
 canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 </style>
 </head>
@@ -89,6 +108,36 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
     <div class="logo">🏆</div>
     <h1>משחקי שמשון</h1>
     <div class="subtitle">משחקי תגמול כיתתיים לשיעורי תורה · ענה נכון → שחק תור!</div>
+  </div>
+
+  <div class="section-title coop">
+    <span class="emoji">🤝</span>
+    <span>שיתופיים — כל הכיתה צוות אחד!</span>
+  </div>
+
+  <div class="games-grid">
+
+    <a class="game-card card-space new" href="מסע_לכוכב.html">
+      <div class="card-emoji">🚀</div>
+      <div class="card-title">מסע לכוכב</div>
+      <div class="card-desc">3D! הכיתה כולה משגרת רוקטה לכוכב. כל תשובה נכונה = אנרגיה והרפתקה — מטאורים, חורים שחורים, וורפ קוסמי!</div>
+      <div class="card-tags"><span class="tag hot">תלת מימד</span><span class="tag">שיתופי</span><span class="tag">אירועים אקראיים</span></div>
+      <button class="card-btn">▶ שיגור!</button>
+    </a>
+
+    <a class="game-card card-dragon new" href="קרב_הדרקון.html">
+      <div class="card-emoji">🐉</div>
+      <div class="card-title">קרב הדרקון</div>
+      <div class="card-desc">3D! כל הכיתה לוחמת בדרקון ענק! בחרו נשק — חרב, קשת, קסם או מגן. הדרקון נושף אש ומשתולל בסוף!</div>
+      <div class="card-tags"><span class="tag hot">תלת מימד</span><span class="tag">שיתופי</span><span class="tag">בחירת תקיפה</span></div>
+      <button class="card-btn">▶ לקרב!</button>
+    </a>
+
+  </div>
+
+  <div class="section-title">
+    <span class="emoji">🏆</span>
+    <span>תחרותיים — קבוצות מתחרות</span>
   </div>
 
   <div class="games-grid">
